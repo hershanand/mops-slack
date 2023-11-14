@@ -35,7 +35,7 @@ const create = async (userId, view) => {
   console.log(JSON.stringify(values));
   // call create record to insert record in pg database
 
-  console.log(payload);
+
   const client = await pool.connect();
   let db_values = ['United States', 10, 'Copy;Creative', 'English;Spanish', 'P-101', 'https://salesforce.quip.com/BDAkAZ2LNBtK#temp:C:BAAf231b29341b44db9b4fe983c0','Campaign','New Members','2023-12-31', 80, 'US - SMB', 1000];
   try {
