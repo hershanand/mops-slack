@@ -49,28 +49,28 @@ const create = async (userId, view) => {
   console.log('---> comm_block ',values.comm_block.communications.value);
   const COMMUNICATIONS = values.comm_block.communications.value;
   
-  let NEED;
+  let NEED = '';
   values.need_block.need.selected_options.forEach((element) => {
     console.log('---> need ',element.text.text);
-    NEED = element.text.text + ";";
+    NEED = NEED + ';' + element.text.text;
   });
-  NEED = NEED.slice(0, -1);
+  NEED = NEED.slice(1);
   console.log('---> need ',NEED);
   
-  let LANG
+  let LANG='';
   values.languages_block.languages.selected_options.forEach((element) => {
     console.log('---> need ',element.text.text);
-    LANG = element.text.text + ";";
+    LANG = LANG + ';' + element.text.text;
   });  
-  LANG = LANG.slice(0, -1);
+  LANG = LANG.slice(1);
   console.log('---> need ',LANG);
 
-  let OBJECTIVE
+  let OBJECTIVE='';
   values.objective_block.objective.selected_options.forEach((element) => {
     console.log('---> need ',element.text.text);
-    OBJECTIVE = element.text.text + ";";
+    OBJECTIVE = OBJECTIVE + ';' + element.text.text;
   });    
-  OBJECTIVE = OBJECTIVE.slice(0, -1);
+  OBJECTIVE = OBJECTIVE.slice(1);
   console.log('---> need ',OBJECTIVE);
   
 
@@ -83,36 +83,36 @@ const create = async (userId, view) => {
   console.log('---> date_block ',values.date_block.date.selected_date);    
   const PROJECT_DATE = values.date_block.date.selected_date;
 
-  const client = await pool.connect();
-  let db_values = [
-    BU_UNIT,
-    COMMUNICATIONS,
-    NEED,
-    LANG,
-    "P-104",
-    BRIEF,
-    TYPE,
-    OBJECTIVE,
-    PROJECT_DATE,
-    GOAL,
-    PROJECT_NAME,
-    BUDGET,
-  ];
+  // const client = await pool.connect();
+  // let db_values = [
+  //   BU_UNIT,
+  //   COMMUNICATIONS,
+  //   NEED,
+  //   LANG,
+  //   "P-104",
+  //   BRIEF,
+  //   TYPE,
+  //   OBJECTIVE,
+  //   PROJECT_DATE,
+  //   GOAL,
+  //   PROJECT_NAME,
+  //   BUDGET,
+  // ];
 
-  try {
-    await client.query("BEGIN");
-    const queryText =
-      "INSERT INTO salesforce.Project__c (business_unit__c, communications__c, needs__c, languages__c, external_ref_id__c, brief__c, type__c, objective__c, due_date__c, goal__c, project_name__c, budget__c) " +
-      "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id";
-    const res = await client.query(queryText, db_values);
-    await client.query("COMMIT");
-    console.log(res.rows[0]);
-  } catch (e) {
-    await client.query("ROLLBACK");
-    throw e;
-  } finally {
-    client.release();
-  }
+  // try {
+  //   await client.query("BEGIN");
+  //   const queryText =
+  //     "INSERT INTO salesforce.Project__c (business_unit__c, communications__c, needs__c, languages__c, external_ref_id__c, brief__c, type__c, objective__c, due_date__c, goal__c, project_name__c, budget__c) " +
+  //     "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id";
+  //   const res = await client.query(queryText, db_values);
+  //   await client.query("COMMIT");
+  //   console.log(res.rows[0]);
+  // } catch (e) {
+  //   await client.query("ROLLBACK");
+  //   throw e;
+  // } finally {
+  //   client.release();
+  // }
 
 
   let result = await api.callAPIMethod("users.info", {
