@@ -34,35 +34,34 @@ const create = async (userId, view) => {
   console.log('VALUES OUTPUT');
   console.log(JSON.stringify(values));
   // call create record to insert record in pg database
-  const response = await createRecord(values);
+
+  console.log(payload);
+  const client = await pool.connect();
+  let db_values = ['United States', 10, 'Copy;Creative', 'English;Spanish', 'https://salesforce.quip.com/BDAkAZ2LNBtK#temp:C:BAAf231b29341b44db9b4fe983c0','Campaign','New Members','2023-12-31', 80, 'US - SMB', 1000];
+  try {
+    await client.query('BEGIN');
+    const queryText = 'INSERT INTO salesforce.Project__c (business_unit__c, communications__c, needs__c, languages__c, external_ref_id__c, brief__c, type__c, objective__c, due_date__c, goal__c, project_name__c, budget__c) ' +
+                      'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id';
+    const res = await client.query(queryText, db_values);
+    await client.query('COMMIT');
+    console.log(res.rows[0]);
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release(); 
+
+    // DEBUG
+    console.log(e);
+  }
+
+
+
   console.log('RESPONSE OUTPUT', response);
 
   let result = await api.callAPIMethod('users.info', {
     user: userId
   });
-
-  await createRecord(payload) {
-    console.log(payload);
-    const client = await pool.connect();
-    let values = ['United States', 10, 'Copy;Creative', 'English;Spanish', 'https://salesforce.quip.com/BDAkAZ2LNBtK#temp:C:BAAf231b29341b44db9b4fe983c0','Campaign','New Members','2023-12-31', 80, 'US - SMB', 1000];
-    try {
-      await client.query('BEGIN');
-      const queryText = 'INSERT INTO salesforce.Project__c (business_unit__c, communications__c, needs__c, languages__c, external_ref_id__c, brief__c, type__c, objective__c, due_date__c, goal__c, project_name__c, budget__c) ' +
-                        'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id';
-      const res = await client.query(queryText, values);
-      await client.query('COMMIT');
-      return (res.rows[0]);
-    } catch (e) {
-      await client.query('ROLLBACK');
-      throw e;
-    } finally {
-      client.release(); 
-
-      // DEBUG
-      console.log(e);
-    }
-
-  };
 
   await sendConfirmation({
     userId,
@@ -71,6 +70,12 @@ const create = async (userId, view) => {
     name: values.name_block.name.value || '_empty_',
     type: values.type_block.type.selected_option && values.type_block.type.selected_option.text.text || 'not assigned'
   });
+};
+
+
+const post = await createRecord(payload) {
+
+
 };
 
 module.exports = { create, sendConfirmation };
