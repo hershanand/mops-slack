@@ -72,10 +72,4 @@ const create = async (userId, view) => {
   });
 };
 
-
-const post = await createRecord(payload) {
-
-
-};
-
 module.exports = { create, sendConfirmation };
