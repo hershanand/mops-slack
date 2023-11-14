@@ -35,44 +35,70 @@ const create = async (userId, view) => {
   console.log(JSON.stringify(values));
   // call create record to insert record in pg database
   console.log('---> bu unit ', values.bu_block.bu.selected_option.text.text);
-  console.log('---> name ', values.name_block.name.value);  
-  console.log('---> type ', values.type_block.type.selected_option.text.text);
-  console.log('---> brief ', values.brief_block.brief.value);
-  console.log('---> comm_block ',values.comm_block.communications.value);;    
+  const BU_UNIT = values.bu_block.bu.selected_option.text.text;
+  
+  console.log('---> name ', values.name_block.name.value); 
+  const PROJECT_NAME = values.name_block.name.value;
 
+  console.log('---> type ', values.type_block.type.selected_option.text.text);
+  const TYPE = values.type_block.type.selected_option.text.text;
+
+  console.log('---> brief ', values.brief_block.brief.value);
+  const BRIEF = values.brief_block.brief.value;
+  
+  console.log('---> comm_block ',values.comm_block.communications.value);
+  const COMMUNICATIONS = values.comm_block.communications.value;
+  
+  let NEED;
   values.need_block.need.selected_options.forEach((element) => {
     console.log('---> need ',element.text.text);
+    NEED = element.text.text + ";";
   });
-
+  NEED = NEED.slice(0, -1);
+  console.log('---> need ',NEED);
+  
+  let LANG
   values.languages_block.languages.selected_options.forEach((element) => {
     console.log('---> need ',element.text.text);
+    LANG = element.text.text + ";";
   });  
+  LANG = LANG.slice(0, -1);
+  console.log('---> need ',LANG);
 
+  let OBJECTIVE
   values.objective_block.objective.selected_options.forEach((element) => {
     console.log('---> need ',element.text.text);
+    OBJECTIVE = element.text.text + ";";
   });    
+  OBJECTIVE = OBJECTIVE.slice(0, -1);
+  console.log('---> need ',OBJECTIVE);
   
 
-  console.log('---> goal_block ',values.goal_block.goal.value);;
-  console.log('---> budget_block ',values.budget_block.budget.value);;
-  console.log('---> date_block ',values.date_block.date.selected_date);;    
+  console.log('---> goal_block ',values.goal_block.goal.value);
+  const GOAL = values.goal_block.goal.value;
 
+  console.log('---> budget_block ',values.budget_block.budget.value);
+  const BUDGET =  values.budget_block.budget.value;
+  
+  console.log('---> date_block ',values.date_block.date.selected_date);    
+  const PROJECT_DATE = values.date_block.date.selected_date;
 
   const client = await pool.connect();
   let db_values = [
-    "EMEA",
-    20,
-    "Copy;Creative",
-    "English;Spanish",
-    "P-102",
-    "https://salesforce.quip.com/BDAkAZ2LNBtK#temp:C:BAAf231b29341b44db9b4fe983c0",
-    "Campaign",
-    "New Members",
-    "2023-12-31",
-    100,
-    "US - SMB2",
-    999,
+    BU_UNIT,
+    COMMUNICATIONS,
+    NEED,
+    LANG,
+    "P-104",
+    BRIEF,
+    TYPE,
+    OBJECTIVE,
+    PROJECT_DATE,
+    GOAL,
+    PROJECT_NAME,
+    BUDGET,
   ];
+
   try {
     await client.query("BEGIN");
     const queryText =
@@ -88,7 +114,6 @@ const create = async (userId, view) => {
     client.release();
   }
 
-  console.log("RESPONSE OUTPUT", response);
 
   let result = await api.callAPIMethod("users.info", {
     user: userId,
