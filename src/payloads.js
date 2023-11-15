@@ -18,7 +18,7 @@ module.exports = {
                     type: 'section',
                     text: {
                         type: 'mrkdwn',
-                        text: `*Title*\n${context.name}\n`
+                        text: `*Project Name*\n${context.name}\n`
                     }
                 },
                 {
