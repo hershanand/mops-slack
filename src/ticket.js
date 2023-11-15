@@ -3,6 +3,7 @@ const api = require("./api");
 const payloads = require("./payloads");
 const config = require("./dbConfig");
 const pool = require("./pool");
+const generateUUID = require("./guid");
 
 /*
  *  Send project creation confirmation via
@@ -29,7 +30,8 @@ const sendConfirmation = async (ticket) => {
 // from their user ID
 const create = async (userId, view) => {
   let values = view.state.values;
-
+  const guid = await generateUUID();
+  console.log('---> guid ', guid);
   // DEBUG
   console.log("VALUES OUTPUT");
   console.log(JSON.stringify(values));
@@ -83,36 +85,36 @@ const create = async (userId, view) => {
   console.log('---> date_block ',values.date_block.date.selected_date);    
   const PROJECT_DATE = values.date_block.date.selected_date;
 
-  // const client = await pool.connect();
-  // let db_values = [
-  //   BU_UNIT,
-  //   COMMUNICATIONS,
-  //   NEED,
-  //   LANG,
-  //   "P-104",
-  //   BRIEF,
-  //   TYPE,
-  //   OBJECTIVE,
-  //   PROJECT_DATE,
-  //   GOAL,
-  //   PROJECT_NAME,
-  //   BUDGET,
-  // ];
+  const client = await pool.connect();
+  let db_values = [
+    BU_UNIT,
+    COMMUNICATIONS,
+    NEED,
+    LANG,
+    guid,
+    BRIEF,
+    TYPE,
+    OBJECTIVE,
+    PROJECT_DATE,
+    GOAL,
+    PROJECT_NAME,
+    BUDGET,
+  ];
 
-  // try {
-  //   await client.query("BEGIN");
-  //   const queryText =
-  //     "INSERT INTO salesforce.Project__c (business_unit__c, communications__c, needs__c, languages__c, external_ref_id__c, brief__c, type__c, objective__c, due_date__c, goal__c, project_name__c, budget__c) " +
-  //     "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id";
-  //   const res = await client.query(queryText, db_values);
-  //   await client.query("COMMIT");
-  //   console.log(res.rows[0]);
-  // } catch (e) {
-  //   await client.query("ROLLBACK");
-  //   throw e;
-  // } finally {
-  //   client.release();
-  // }
+  try {
+    await client.query("BEGIN");
+    const queryText =
+      "INSERT INTO salesforce.Project__c (business_unit__c, communications__c, needs__c, languages__c, external_ref_id__c, brief__c, type__c, objective__c, due_date__c, goal__c, project_name__c, budget__c) " +
+      "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id";
+    const res = await client.query(queryText, db_values);
+    await client.query("COMMIT");
+    console.log(res.rows[0]);
+  } catch (e) {
+    await client.query("ROLLBACK");
+    throw e;
+  } finally {
+    client.release();
+  }
 
 
   let result = await api.callAPIMethod("users.info", {
