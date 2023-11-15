@@ -53,7 +53,7 @@ const create = async (userId, view) => {
   
   let NEED = '';
   values.need_block.need.selected_options.forEach((element) => {
-    console.log('---> need ',element.text.text);
+    console.log(element.text.text);
     NEED = NEED + ';' + element.text.text;
   });
   NEED = NEED.slice(1);
@@ -61,19 +61,19 @@ const create = async (userId, view) => {
   
   let LANG='';
   values.languages_block.languages.selected_options.forEach((element) => {
-    console.log('---> need ',element.text.text);
+    console.log(element.text.text);
     LANG = LANG + ';' + element.text.text;
   });  
   LANG = LANG.slice(1);
-  console.log('---> need ',LANG);
+  console.log('---> LANG ',LANG);
 
   let OBJECTIVE='';
   values.objective_block.objective.selected_options.forEach((element) => {
-    console.log('---> need ',element.text.text);
+    console.log(element.text.text);
     OBJECTIVE = OBJECTIVE + ';' + element.text.text;
   });    
   OBJECTIVE = OBJECTIVE.slice(1);
-  console.log('---> need ',OBJECTIVE);
+  console.log('---> OBJECTIVE ',OBJECTIVE);
   
 
   console.log('---> goal_block ',values.goal_block.goal.value);
