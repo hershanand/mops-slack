@@ -2,13 +2,13 @@ module.exports = {
     confirmation: context => {
         return {
             channel: context.channel_id,
-            text: 'Project created!',
+            text: 'New Project Proposal Created',
             blocks: JSON.stringify([
                 {
                     type: 'section',
                     text: {
                         type: 'mrkdwn',
-                        text: '*Project created!*'
+                        text: '*New Project Proposal Created*'
                     }
                 },
                 {
