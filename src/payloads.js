@@ -242,7 +242,7 @@ module.exports = {
                         },
                         element: {
                             action_id: 'objective',
-                            type: 'multi_static_select',
+                            type: 'static_select',
                             options: [
                                 {
                                     text: {
@@ -250,6 +250,20 @@ module.exports = {
                                         text: "New Members"
                                     },
                                     value: "new_members"
+                                },
+                                {
+                                    text: {
+                                        type: "plain_text",
+                                        text: "GMV"
+                                    },
+                                    value: "gmv"
+                                },
+                                {
+                                    text: {
+                                        type: "plain_text",
+                                        text: "Impressions"
+                                    },
+                                    value: "impressions"
                                 },
                                 {
                                     text: {
