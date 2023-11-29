@@ -67,14 +67,8 @@ const create = async (userId, view) => {
   LANG = LANG.slice(1);
   console.log('---> LANG ',LANG);
 
-  let OBJECTIVE='';
-  values.objective_block.objective.selected_options.forEach((element) => {
-    console.log(element.text.text);
-    OBJECTIVE = OBJECTIVE + ';' + element.text.text;
-  });    
-  OBJECTIVE = OBJECTIVE.slice(1);
-  console.log('---> OBJECTIVE ',OBJECTIVE);
-  
+  console.log('---> objective_block ', values.objective_block.objective.selected_option.text.text);
+  const OBJECTIVE = values.objective_block.objective.selected_option.text.text;
 
   console.log('---> goal_block ',values.goal_block.goal.value);
   const GOAL = values.goal_block.goal.value;
